@@ -1,11 +1,12 @@
 import React from "react";
+import { StyledDisplay } from "./styles/StyledDisplay";
 interface Props {
     gameOver: boolean
     text:string
 }
 function Display({gameOver, text}:Props){
     return(
-        <div>{text}</div>
+        <StyledDisplay gameOver={gameOver}>{text}</StyledDisplay>
     )
 
 }
