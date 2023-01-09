@@ -13,8 +13,9 @@ import { useGameStatus } from '../hooks/useGameStatus';
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
+import Leaderboard from './styles/StyledLeaderBoard';
 
-const Tetris = () => {
+const Tetris = ({handleLogout, user}) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 	const [HighScore, setHighScore] = useState(0);
@@ -24,9 +25,6 @@ const Tetris = () => {
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
-
-  console.log('re-render');
-
   const movePlayer = dir => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
@@ -39,6 +37,9 @@ const Tetris = () => {
       if (keyCode === 40) {
         setDropTime(1000 / (level + 1));
       }
+      if (keyCode === 83) {
+        setDropTime(1000 / (level + 1));
+      }
     }
   };
 
@@ -47,7 +48,7 @@ const Tetris = () => {
     setStage(createStage());
     setDropTime(1000);
     resetPlayer();
-		if(score!==0 && score > HighScore){
+		if(score !== 0 && score > HighScore){
 			setHighScore(score);
 		}
     setScore(0);
@@ -69,7 +70,6 @@ const Tetris = () => {
     } else {
       // Game over!
       if (player.pos.y < 1) {
-        console.log('GAME OVER!!!');
         setGameOver(true);
         setDropTime(null);
       }
@@ -100,6 +100,14 @@ const Tetris = () => {
         dropPlayer();
       } else if (keyCode === 38) {
         playerRotate(stage, 1);
+      }else if (keyCode === 65) {
+        movePlayer(-1);
+      }else if (keyCode === 68) {
+        movePlayer(1);
+      } else if (keyCode === 83) {
+        dropPlayer();
+      } else if (keyCode === 87) {
+        playerRotate(stage, 1);
       }
     }
   };
@@ -118,6 +126,7 @@ const Tetris = () => {
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
             <div>
+              <Display text ={`Logged in as ${user.displayName}`}/>
 							<Display text={`HighScore: ${HighScore}`} />
               <Display text={`Score: ${score}`} />
               <Display text={`rows: ${rows}`} />
@@ -125,6 +134,9 @@ const Tetris = () => {
             </div>
           )}
           <StartButton callback={startGame} />
+        </aside>
+        <aside>
+          <Leaderboard user={user} HighScore={HighScore}/>
         </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
