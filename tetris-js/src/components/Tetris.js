@@ -131,6 +131,7 @@ const Tetris = ({handleLogout, user}) => {
               <Display text={`Score: ${score}`} />
               <Display text={`rows: ${rows}`} />
               <Display text={`Level: ${level}`} />
+              <Display text={`Controls: W-Rotate Block |A-left | S-down | D-right |`} />
             </div>
           )}
           <StartButton callback={startGame} />

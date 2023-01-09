@@ -45,7 +45,7 @@ const Leaderboard = ({user,HighScore}) => {
                 id: doc.id,
                 ...doc.data()
             }));
-            console.log(newPlayers)
+            // console.log(newPlayers)
             setPlayers(newPlayers);
         });
         return () => unsubscribe();
