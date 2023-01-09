@@ -51,26 +51,13 @@ const Leaderboard = ({user,HighScore}) => {
         return () => unsubscribe();
     }, []);
     
-    const handleAddPlayer = (name, score) => {
+    const handleAddPlayer = () => {
         const db = firebase.firestore();
-        const userRef = db.collection('players').doc(name);
-        userRef.get()
-          .then(doc => {
-            if (doc.exists) {
-              // Update the user's score if it is higher than the current score
-              const currentScore = doc.data().score;
-              if (score > currentScore) {
-                userRef.update({ score });
-              }
-            } else {
-              // Add the user to the leaderboard if they don't already exist
-              db.collection('players').add({ name, score });
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      };
+        db.collection('players').add({
+            Name: user.displayName,
+            Score: HighScore
+        });
+    };
     
     return (
         <LeaderboardContainer>
