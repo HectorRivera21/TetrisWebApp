@@ -15,7 +15,7 @@ import Display from './Display';
 import StartButton from './StartButton';
 import Leaderboard from './styles/StyledLeaderBoard';
 
-const Tetris = ({handleLogout, user}) => {
+const Tetris = ({logOut, user}) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 	const [HighScore, setHighScore] = useState(0);
@@ -55,6 +55,7 @@ const Tetris = ({handleLogout, user}) => {
     setLevel(0);
     setRows(0);
     setGameOver(false);
+    console.log('click')
   };
 
   const drop = () => {
@@ -126,6 +127,7 @@ const Tetris = ({handleLogout, user}) => {
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
             <div>
+              <button onClick={logOut}>LogOut</button>
               <Display text ={`Logged in as ${user.displayName}`}/>
 							<Display text={`HighScore: ${HighScore}`} />
               <Display text={`Score: ${score}`} />

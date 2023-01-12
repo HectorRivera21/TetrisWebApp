@@ -8,7 +8,7 @@ const LeaderboardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 `;
 
@@ -19,7 +19,7 @@ const LeaderboardTable = styled.table`
 
 const LeaderboardRow = styled.tr`
   
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 
 `;
 
@@ -52,11 +52,12 @@ const Leaderboard = ({user,HighScore}) => {
     }, []);
     
     const handleAddPlayer = () => {
-        const db = firebase.firestore();
-        db.collection('players').add({
-            Name: user.displayName,
-            Score: HighScore
-        });
+      const db = firebase.firestore();
+      db.collection('players').add({
+        Name: user.displayName,
+        Score: HighScore,
+        User: user.uid   
+      });
     };
     
     return (
@@ -72,7 +73,7 @@ const Leaderboard = ({user,HighScore}) => {
           {players.map((player, index)=>(
                 <LeaderboardRow key={player.id}>
                 <LeaderboardData>{index + 1}</LeaderboardData>
-                <LeaderboardData>{player.Name}</LeaderboardData>
+                <LeaderboardData>{(index + 1) === 1 ?`TopG ${player.Name}`: 'nothing'}</LeaderboardData>
                 <LeaderboardData>{player.Score}</LeaderboardData>
                 </LeaderboardRow>
             ))} 

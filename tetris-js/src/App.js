@@ -63,10 +63,7 @@ function App() {
           <button onClick={handleLogin}>google login</button>
         </div>
       ):
-        <div id ="buttonboi">
-          <button onClick={handleLogout}>LogOut</button>
-          <Tetris user= {user} logOut ={handleLogout}/>
-        </div>
+        <Tetris user= {user} logOut ={handleLogout}/>
       }
     </div>
   );
