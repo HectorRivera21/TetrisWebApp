@@ -51,12 +51,25 @@ const Leaderboard = ({user,HighScore}) => {
         return () => unsubscribe();
     }, []);
     
-    const handleAddPlayer = () => {
+    const handleAddPlayer = (newScore) => {
       const db = firebase.firestore();
-      db.collection('players').add({
-        Name: user.displayName,
-        Score: HighScore,
-        User: user.uid   
+      const userRef = db.collection('players').where('User', '==', user.uid);
+      userRef.get()
+      .then(querySnapshot => {
+          if (querySnapshot.empty) {
+            db.collection('players').add({
+              Name: user.displayName,
+              Score: newScore,
+              User: user.uid   
+            });
+          } else {
+              querySnapshot.forEach(doc => {
+                doc.ref.update({ Score: newScore });
+              });
+          }
+      })
+      .catch(error => {
+        console.error(error);
       });
     };
     
@@ -73,13 +86,13 @@ const Leaderboard = ({user,HighScore}) => {
           {players.map((player, index)=>(
                 <LeaderboardRow key={player.id}>
                 <LeaderboardData>{index + 1}</LeaderboardData>
-                <LeaderboardData>{(index + 1) === 1 ?`TopG ${player.Name}`: 'nothing'}</LeaderboardData>
+                <LeaderboardData>{(index + 1) === 1 ?`TopG ${player.Name}`: player.Name}</LeaderboardData>
                 <LeaderboardData>{player.Score}</LeaderboardData>
                 </LeaderboardRow>
             ))} 
         </tbody>
       </LeaderboardTable>
-      <button onClick={handleAddPlayer}>SubmitScore</button>
+      <button onClick={()=>handleAddPlayer(HighScore)}>SubmitScore</button> 
     </LeaderboardContainer>
   );
 };

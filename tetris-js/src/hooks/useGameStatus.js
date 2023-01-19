@@ -5,9 +5,10 @@ export const useGameStatus = rowsCleared => {
   const [rows, setRows] = useState(0);
   const [level, setLevel] = useState(0);
 
-  const linePoints = [40, 100, 300, 1200];
+ const linePoints = [40, 100, 300, 1200];
 
-  const calcScore = useCallback(() => {
+  const calcScore = useCallback(() => { 
+    
     // We have score
     if (rowsCleared > 0) {
       // This is how original Tetris score is calculated
@@ -19,6 +20,7 @@ export const useGameStatus = rowsCleared => {
   useEffect(() => {
     calcScore();
   }, [calcScore, rowsCleared, score]);
+
 
   return [score, setScore, rows, setRows, level, setLevel];
 };

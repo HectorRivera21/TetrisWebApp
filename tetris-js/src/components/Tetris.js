@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
@@ -55,7 +58,7 @@ const Tetris = ({logOut, user}) => {
     setLevel(0);
     setRows(0);
     setGameOver(false);
-    console.log('click')
+    
   };
 
   const drop = () => {
@@ -112,6 +115,26 @@ const Tetris = ({logOut, user}) => {
       }
     }
   };
+  const handleGetHighScore = () => {
+    const db = firebase.firestore();
+    const userRef = db.collection('players').where('UserId', '==', user.uid);
+    userRef.get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        setHighScore(doc.data().Score);
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  };
+  const highScore = localStorage.getItem("highScore");
+  if (highScore) {
+    setHighScore(highScore);
+  } else {
+    handleGetHighScore();
+  }
+  
 
   return (
     <StyledTetrisWrapper
